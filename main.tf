@@ -26,3 +26,32 @@ resource "aws_s3_bucket" "b" {
 EOF
   }
 }
+
+resource "aws_s3_bucket_object" "object" {
+  bucket = "yasmin-nails-studio.com"
+  key    = "index.html"
+  source = "C:\\Users\\wafa\\yasmin\\index.html"
+
+}
+
+
+
+resource "aws_s3_bucket_policy" "policy" {
+  bucket = "${aws_s3_bucket.b.id}"
+
+  policy = <<POLICY
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "AddPerm",
+      "Effect": "Allow",
+      "Principal": "*",
+      "Action": "s3:GetObject",
+      "Resource": "arn:aws:s3:::yasmin-nails-studio.com/*"
+
+    }
+  ]
+}
+POLICY
+}
