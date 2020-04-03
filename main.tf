@@ -6,7 +6,7 @@ provider "aws" {
 }
 
 resource "aws_s3_bucket" "b" {
-  bucket = "yasmin-nails-studio.com"
+  bucket = "yasminnailsstudio"
   acl    = "public-read"
 
 
@@ -14,30 +14,22 @@ resource "aws_s3_bucket" "b" {
     index_document = "index.html"
     error_document = "error.html"
 
-    routing_rules = <<EOF
-[{
-    "Condition": {
-        "KeyPrefixEquals": "docs/"
-    },
-    "Redirect": {
-        "ReplaceKeyPrefixWith": "documents/"
-    }
-}]
-EOF
+
   }
 }
 
 resource "aws_s3_bucket_object" "object" {
-  bucket = "yasmin-nails-studio.com"
+  bucket = "${aws_s3_bucket.b.bucket}"
   key    = "index.html"
   source = "C:\\Users\\wafa\\yasmin\\index.html"
+  content_type = "text/html"
 
 }
 
 
 
 resource "aws_s3_bucket_policy" "policy" {
-  bucket = "${aws_s3_bucket.b.id}"
+  bucket = "${aws_s3_bucket.b.bucket}"
 
   policy = <<POLICY
 {
@@ -48,7 +40,7 @@ resource "aws_s3_bucket_policy" "policy" {
       "Effect": "Allow",
       "Principal": "*",
       "Action": "s3:GetObject",
-      "Resource": "arn:aws:s3:::yasmin-nails-studio.com/*"
+      "Resource": "arn:aws:s3:::yasminnailsstudio/*"
 
     }
   ]
