@@ -6,7 +6,7 @@ provider "aws" {
 }
 
 resource "aws_s3_bucket" "b" {
-  bucket = "yasminnailsstudio"
+  bucket = "yasminsalon.com"
   acl    = "public-read"
 
 
@@ -26,6 +26,14 @@ resource "aws_s3_bucket_object" "object" {
 
 }
 
+resource "aws_s3_bucket_object" "objecttwo" {
+  bucket = "${aws_s3_bucket.b.bucket}"
+  key    = "manicure.html"
+  source = "C:\\Users\\wafa\\yasmin\\manicure.html"
+  content_type = "text/html"
+
+}
+
 
 
 resource "aws_s3_bucket_policy" "policy" {
@@ -40,7 +48,7 @@ resource "aws_s3_bucket_policy" "policy" {
       "Effect": "Allow",
       "Principal": "*",
       "Action": "s3:GetObject",
-      "Resource": "arn:aws:s3:::yasminnailsstudio/*"
+      "Resource": "arn:aws:s3:::yasminsalon.com/*"
 
     }
   ]
