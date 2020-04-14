@@ -18,6 +18,19 @@ resource "aws_s3_bucket" "b" {
   }
 }
 
+resource "aws_s3_bucket" "c" {
+  bucket = "manicure.yasminsalon.com"
+  acl    = "public-read"
+
+
+  website {
+    index_document = "manicure.html"
+    error_document = "error.html"
+
+
+  }
+}
+
 resource "aws_s3_bucket_object" "object" {
   bucket = "${aws_s3_bucket.b.bucket}"
   key    = "index.html"
@@ -27,7 +40,7 @@ resource "aws_s3_bucket_object" "object" {
 }
 
 resource "aws_s3_bucket_object" "objecttwo" {
-  bucket = "${aws_s3_bucket.b.bucket}"
+  bucket = "${aws_s3_bucket.c.bucket}"
   key    = "manicure.html"
   source = "C:\\Users\\wafa\\yasmin\\manicure.html"
   content_type = "text/html"
@@ -49,6 +62,26 @@ resource "aws_s3_bucket_policy" "policy" {
       "Principal": "*",
       "Action": "s3:GetObject",
       "Resource": "arn:aws:s3:::yasminsalon.com/*"
+
+    }
+  ]
+}
+POLICY
+}
+
+resource "aws_s3_bucket_policy" "policytwo" {
+  bucket = "${aws_s3_bucket.c.bucket}"
+
+  policy = <<POLICY
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "AddPerm",
+      "Effect": "Allow",
+      "Principal": "*",
+      "Action": "s3:GetObject",
+      "Resource": "arn:aws:s3:::manicure.yasminsalon.com/*"
 
     }
   ]
